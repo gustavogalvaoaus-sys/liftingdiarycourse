@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import { ClerkProvider, SignInButton, SignUpButton, Show, UserButton } from "@clerk/nextjs";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ModeToggle } from "@/components/mode-toggle";
 import "./globals.css";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -29,29 +31,32 @@ export default function RootLayout({
       className={`${plusJakartaSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <ClerkProvider>
-          <header className="flex justify-between items-center px-6 py-3 border-b">
-            <span className="font-semibold text-base">Lifting Diary</span>
-            <div className="flex gap-2">
-              <Show when="signed-out">
-                <SignInButton mode="modal">
-                  <button className="px-4 py-2 text-sm font-medium border rounded-md hover:bg-gray-50 transition-colors">
-                    Sign in
-                  </button>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <button className="px-4 py-2 text-sm font-medium bg-black text-white rounded-md hover:bg-gray-800 transition-colors">
-                    Sign up
-                  </button>
-                </SignUpButton>
-              </Show>
-              <Show when="signed-in">
-                <UserButton />
-              </Show>
-            </div>
-          </header>
-          {children}
-        </ClerkProvider>
+        <ThemeProvider>
+          <ClerkProvider>
+            <header className="flex justify-between items-center px-6 py-3 border-b">
+              <span className="font-semibold text-base">Lifting Diary</span>
+              <div className="flex gap-2 items-center">
+                <ModeToggle />
+                <Show when="signed-out">
+                  <SignInButton mode="modal">
+                    <button className="px-4 py-2 text-sm font-medium border rounded-md hover:bg-gray-50 transition-colors">
+                      Sign in
+                    </button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <button className="px-4 py-2 text-sm font-medium bg-black text-white rounded-md hover:bg-gray-800 transition-colors">
+                      Sign up
+                    </button>
+                  </SignUpButton>
+                </Show>
+                <Show when="signed-in">
+                  <UserButton />
+                </Show>
+              </div>
+            </header>
+            {children}
+          </ClerkProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
