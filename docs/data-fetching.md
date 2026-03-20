@@ -28,19 +28,19 @@ Example pattern:
 
 ```ts
 // src/data/workouts.ts
-import { db } from "@/lib/db";
-import { workouts } from "@/lib/schema";
+import { db } from "@/db";
+import { workouts } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { auth } from "@/lib/auth";
+import { auth } from "@clerk/nextjs/server";
 
 export async function getWorkouts() {
-  const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
 
   return db
     .select()
     .from(workouts)
-    .where(eq(workouts.userId, session.user.id));
+    .where(eq(workouts.userId, userId));
 }
 ```
 

@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { getWorkoutsForDate } from "@/data/workouts";
 import { CalendarClient } from "./CalendarClient";
+import { getWorkoutStatus } from "@/lib/workout";
 
 function formatDate(date: Date): string {
   const day = date.getDate();
@@ -16,7 +17,7 @@ function formatDate(date: Date): string {
 }
 
 function formatDuration(startedAt: Date, completedAt: Date | null): string {
-  if (!completedAt) return "In progress";
+  if (!completedAt) return getWorkoutStatus(startedAt, completedAt);
   const minutes = Math.round(
     (completedAt.getTime() - startedAt.getTime()) / 60000
   );
@@ -55,9 +56,11 @@ export default async function DashboardPage({
           </h2>
 
           {workouts.length === 0 ? (
-            <p className="text-sm text-zinc-500">
-              No workouts logged for this date.
-            </p>
+            <div className="rounded-xl border border-zinc-200 px-5 py-4 flex items-center justify-center min-h-32">
+              <p className="text-base font-bold text-zinc-500 text-center">
+                No workouts logged for this date.
+              </p>
+            </div>
           ) : (
             <div className="flex flex-col gap-3">
               {workouts.map((workout) => (
@@ -88,6 +91,15 @@ export default async function DashboardPage({
               ))}
             </div>
           )}
+
+          <div className="flex justify-end">
+            <a
+              href={`/dashboard/workout/new?date=${selectedDateStr}`}
+              className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700"
+            >
+              Create workout
+            </a>
+          </div>
         </div>
       </div>
     </div>
