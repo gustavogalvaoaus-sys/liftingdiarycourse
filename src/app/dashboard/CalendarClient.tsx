@@ -16,13 +16,16 @@ export function CalendarClient({ selectedDateStr }: { selectedDateStr: string })
   }
 
   return (
-    <div className="rounded-xl border border-zinc-200 p-4 w-fit">
-      <Calendar
-        mode="single"
-        locale={enUS}
-        selected={selected}
-        onSelect={handleSelect}
-      />
+    <div className="flex flex-col gap-3">
+      <div className="rounded-xl border border-zinc-200 p-4 w-fit">
+        <Calendar
+          mode="single"
+          locale={enUS}
+          selected={selected}
+          onSelect={handleSelect}
+        />
+      </div>
+
     </div>
   );
 }
