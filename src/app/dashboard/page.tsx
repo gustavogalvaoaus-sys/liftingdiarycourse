@@ -64,9 +64,10 @@ export default async function DashboardPage({
           ) : (
             <div className="flex flex-col gap-3">
               {workouts.map((workout) => (
-                <div
+                <a
                   key={workout.id}
-                  className="rounded-xl border border-zinc-200 px-5 py-4 flex flex-col gap-3"
+                  href={`/dashboard/workout/${workout.id}`}
+                  className="rounded-xl border border-zinc-200 px-5 py-4 flex flex-col gap-3 hover:border-zinc-400 hover:bg-zinc-50 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-base">{workout.name}</span>
@@ -87,7 +88,7 @@ export default async function DashboardPage({
                   <span className="text-sm text-zinc-500">
                     Duration: {formatDuration(workout.startedAt, workout.completedAt)}
                   </span>
-                </div>
+                </a>
               ))}
             </div>
           )}
