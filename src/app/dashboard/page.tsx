@@ -29,12 +29,11 @@ export default async function DashboardPage({
   searchParams: Promise<{ date?: string }>;
 }) {
   const { date: dateParam } = await searchParams;
-  const selectedDate = dateParam
-    ? (() => {
-        const [y, m, d] = dateParam.split("-").map(Number);
-        return new Date(y, m - 1, d);
-      })()
-    : new Date();
+  const today = new Date();
+  const isoToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+  const selectedDateStr = dateParam ?? isoToday;
+  const [y, m, d] = selectedDateStr.split("-").map(Number);
+  const selectedDate = new Date(y, m - 1, d);
 
   const workouts = await getWorkoutsForDate(selectedDate);
 
@@ -46,7 +45,7 @@ export default async function DashboardPage({
         {/* Left: Calendar */}
         <div className="flex flex-col gap-3">
           <h2 className="text-lg font-semibold">Select Date</h2>
-          <CalendarClient selected={selectedDate} />
+          <CalendarClient selectedDateStr={selectedDateStr} />
         </div>
 
         {/* Right: Workouts */}

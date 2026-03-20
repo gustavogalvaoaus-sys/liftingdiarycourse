@@ -4,8 +4,10 @@ import { useRouter } from "next/navigation";
 import { Calendar } from "@/components/ui/calendar";
 import { enUS } from "date-fns/locale";
 
-export function CalendarClient({ selected }: { selected: Date }) {
+export function CalendarClient({ selectedDateStr }: { selectedDateStr: string }) {
   const router = useRouter();
+  const [y, m, d] = selectedDateStr.split("-").map(Number);
+  const selected = new Date(y, m - 1, d);
 
   function handleSelect(date: Date | undefined) {
     if (!date) return;
