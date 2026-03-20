@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 
 const isProtectedRoute = createRouteMatcher(['/dashboard(.*)'])
 const isHomePage = createRouteMatcher(['/'])
+const isNotAuthorizedPage = createRouteMatcher(['/not-authorized'])
 
 export default clerkMiddleware(async (auth, req) => {
   if (isProtectedRoute(req)) {
@@ -12,7 +13,7 @@ export default clerkMiddleware(async (auth, req) => {
     }
   }
 
-  if (isHomePage(req)) {
+  if (isHomePage(req) || isNotAuthorizedPage(req)) {
     const { userId } = await auth()
     if (userId) {
       return NextResponse.redirect(new URL('/dashboard', req.url))

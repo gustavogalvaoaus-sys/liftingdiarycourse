@@ -12,7 +12,7 @@ export default function NotAuthorizedPage() {
           Please sign in to continue to the dashboard.
         </p>
       </div>
-      <SignInButton mode="modal">
+      <SignInButton mode="modal" forceRedirectUrl="/dashboard">
         <Button>Sign in</Button>
       </SignInButton>
     </div>
