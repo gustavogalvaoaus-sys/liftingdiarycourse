@@ -6,7 +6,10 @@ const isHomePage = createRouteMatcher(['/'])
 
 export default clerkMiddleware(async (auth, req) => {
   if (isProtectedRoute(req)) {
-    await auth.protect()
+    const { userId } = await auth()
+    if (!userId) {
+      return NextResponse.redirect(new URL('/not-authorized', req.url))
+    }
   }
 
   if (isHomePage(req)) {
