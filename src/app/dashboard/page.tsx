@@ -92,14 +92,16 @@ export default async function DashboardPage({
             </div>
           )}
 
-          <div className="flex justify-end">
-            <a
-              href={`/dashboard/workout/new?date=${selectedDateStr}`}
-              className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700"
-            >
-              Create workout
-            </a>
-          </div>
+          {selectedDateStr >= isoToday && (
+            <div className="flex justify-end">
+              <a
+                href={`/dashboard/workout/new?date=${selectedDateStr}`}
+                className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-700"
+              >
+                Create workout
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </div>
