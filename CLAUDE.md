@@ -19,6 +19,11 @@ npm run lint   # ESLint
 - **TypeScript** with strict settings; path alias `@/*` → `src/*`
 - **Tailwind CSS v4** via `@tailwindcss/postcss`
 
+**IMPORTANT**: When generating any code, ALWAYS first refer to the relevant documentation files within the `/docs` directory to understand existing patterns, conventions, and best practices before implementation:
+
+- /docs/ui.md
+- /docs/data-fetching.md
+
 ## Architecture
 
 Routing uses the App Router file-based convention under `src/app/`. Root layout is `src/app/layout.tsx`; pages co-locate with their routes. API routes go under `src/app/api/`.
