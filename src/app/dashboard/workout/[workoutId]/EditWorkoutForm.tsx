@@ -82,7 +82,7 @@ export function EditWorkoutForm({ workout }: Props) {
         <Button
           type="button"
           variant="outline"
-          onClick={() => router.back()}
+          onClick={() => router.push("/dashboard")}
           disabled={pending}
         >
           Cancel
