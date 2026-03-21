@@ -67,7 +67,7 @@ export default async function DashboardPage({
                 <a
                   key={workout.id}
                   href={`/dashboard/workout/${workout.id}`}
-                  className="rounded-xl border border-zinc-200 px-5 py-4 flex flex-col gap-3 hover:border-zinc-400 hover:bg-zinc-50 transition-colors cursor-pointer"
+                  className="rounded-xl border border-zinc-200 dark:border-zinc-700 px-5 py-4 flex flex-col gap-3 hover:border-zinc-400 dark:hover:border-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-base">{workout.name}</span>
@@ -79,7 +79,7 @@ export default async function DashboardPage({
                     {workout.workoutExercises.map((we) => (
                       <span
                         key={we.id}
-                        className="rounded-md border border-zinc-200 bg-zinc-50 px-2.5 py-0.5 text-xs text-zinc-700"
+                        className="rounded-md border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-2.5 py-0.5 text-xs text-zinc-700 dark:text-zinc-300"
                       >
                         {we.exercise.name}
                       </span>
