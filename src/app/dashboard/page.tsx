@@ -67,10 +67,10 @@ export default async function DashboardPage({
                 <a
                   key={workout.id}
                   href={`/dashboard/workout/${workout.id}`}
-                  className="rounded-xl border border-zinc-200 px-5 py-4 flex flex-col gap-3 hover:border-zinc-400 hover:bg-zinc-50 transition-colors cursor-pointer"
+                  className="group rounded-xl border border-zinc-200 px-5 py-4 flex flex-col gap-3 hover:border-zinc-400 hover:bg-zinc-50 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-base">{workout.name}</span>
+                    <span className="font-bold text-base dark:group-hover:text-zinc-900">{workout.name}</span>
                     <span className="text-sm text-zinc-500">
                       {format(workout.startedAt, "h:mm a")}
                     </span>
