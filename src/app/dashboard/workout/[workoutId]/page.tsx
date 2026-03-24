@@ -37,16 +37,15 @@ export default async function EditWorkoutPage({ params, searchParams }: Props) {
       <h1 className="text-3xl font-bold">{workout.name}</h1>
       <EditWorkoutForm workout={workout} isCompleted={isCompleted || isSkipped} dateParam={dateParam} />
 
+      {!isCompleted && !isSkipped && (
+        <AddExerciseForm
+          workoutId={workoutId}
+          availableExercises={allExercises}
+        />
+      )}
+
       <section className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Exercises</h2>
-          {!isCompleted && !isSkipped && (
-            <AddExerciseForm
-              workoutId={workoutId}
-              availableExercises={allExercises}
-            />
-          )}
-        </div>
+        <h2 className="text-lg font-semibold">Exercises</h2>
         <ExerciseList
           workoutExercises={workoutWithExercises.workoutExercises}
           isCompleted={isCompleted || isSkipped}

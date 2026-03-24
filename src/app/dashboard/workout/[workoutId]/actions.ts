@@ -47,9 +47,9 @@ const addExerciseToWorkoutSchema = z.object({
 export async function addExerciseToWorkoutAction(params: {
   workoutId: string;
   exerciseId: string;
-}): Promise<void> {
+}): Promise<{ workoutExerciseId: string }> {
   const validated = addExerciseToWorkoutSchema.parse(params);
-  await addExerciseToWorkout(validated);
+  return addExerciseToWorkout(validated);
 }
 
 const createExerciseSchema = z.object({
@@ -65,8 +65,8 @@ export async function createExerciseAction(params: {
 
 const logSetSchema = z.object({
   workoutExerciseId: z.string().min(1),
-  weight: z.number().positive().nullable(),
-  reps: z.number().int().positive().nullable(),
+  weight: z.number().min(0).nullable(),
+  reps: z.number().int().min(0).nullable(),
 });
 
 export async function logSetAction(params: {
