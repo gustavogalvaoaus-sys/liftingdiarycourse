@@ -41,7 +41,7 @@ export async function getWorkoutWithExercisesAndSets(workoutId: string) {
 export async function addExerciseToWorkout(data: {
   workoutId: string;
   exerciseId: string;
-}) {
+}): Promise<{ workoutExerciseId: string }> {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
@@ -55,11 +55,13 @@ export async function addExerciseToWorkout(data: {
     .from(workoutExercises)
     .where(eq(workoutExercises.workoutId, data.workoutId));
 
-  await db.insert(workoutExercises).values({
+  const [inserted] = await db.insert(workoutExercises).values({
     workoutId: data.workoutId,
     exerciseId: data.exerciseId,
     order: existingCount,
-  });
+  }).returning({ id: workoutExercises.id });
+
+  return { workoutExerciseId: inserted.id };
 }
 
 export async function removeExerciseFromWorkout(workoutExerciseId: string) {

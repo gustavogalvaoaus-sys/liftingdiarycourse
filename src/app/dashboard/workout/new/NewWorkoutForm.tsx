@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { createWorkoutAction } from "./actions";
+import { Trash2 } from "lucide-react";
 
 type Exercise = { id: string; name: string };
 
@@ -63,7 +64,15 @@ export function NewWorkoutForm({ availableExercises }: Props) {
   const [selectedMinute, setSelectedMinute] = useState(pad(Math.floor(defaultSlot.getMinutes() / 15) * 15));
   const [calendarOpen, setCalendarOpen] = useState(false);
 
-  const [exerciseEntries, setExerciseEntries] = useState<ExerciseEntry[]>([]);
+  const [exerciseEntries, setExerciseEntries] = useState<ExerciseEntry[]>(() => [
+    {
+      id: nextId(),
+      mode: availableExercises.length > 0 ? "existing" : "new",
+      exerciseId: availableExercises[0]?.id ?? "",
+      newExerciseName: "",
+      sets: [{ weight: "", reps: "" }],
+    },
+  ]);
 
   function addExerciseEntry() {
     setExerciseEntries((prev) => [
@@ -214,48 +223,42 @@ export function NewWorkoutForm({ availableExercises }: Props) {
           </Button>
         </div>
 
-        {exerciseEntries.length === 0 && (
-          <p className="text-sm text-muted-foreground">
-            No exercises added yet. Click &quot;Add Exercise&quot; to get started.
-          </p>
-        )}
 
         {exerciseEntries.map((entry, entryIndex) => (
           <div key={entry.id} className="border rounded-lg p-4 flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-lg">Exercise {entryIndex + 1}</h3>
+              {availableExercises.length > 0 ? (
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant={entry.mode === "existing" ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => updateEntry(entry.id, { mode: "existing" })}
+                  >
+                    Choose existing
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={entry.mode === "new" ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => updateEntry(entry.id, { mode: "new" })}
+                  >
+                    Add new
+                  </Button>
+                </div>
+              ) : (
+                <div />
+              )}
               <Button
                 type="button"
-                variant="ghost"
+                variant="outline"
                 size="sm"
                 onClick={() => removeExerciseEntry(entry.id)}
-                className="text-destructive hover:text-destructive"
+                className="text-destructive hover:text-destructive border-destructive/40 hover:border-destructive"
               >
-                Remove
+                <Trash2 className="h-4 w-4" />
               </Button>
             </div>
-
-            {/* Mode toggle */}
-            {availableExercises.length > 0 && (
-              <div className="flex gap-2">
-                <Button
-                  type="button"
-                  variant={entry.mode === "existing" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => updateEntry(entry.id, { mode: "existing" })}
-                >
-                  Choose existing
-                </Button>
-                <Button
-                  type="button"
-                  variant={entry.mode === "new" ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => updateEntry(entry.id, { mode: "new" })}
-                >
-                  Add new
-                </Button>
-              </div>
-            )}
 
             {/* Exercise picker */}
             {entry.mode === "existing" ? (
@@ -288,55 +291,35 @@ export function NewWorkoutForm({ availableExercises }: Props) {
             )}
 
             {/* Sets */}
-            <div className="flex gap-2 items-end">
-              <div className="flex flex-col gap-1 flex-1">
-                <Label className="text-xs">Weight (kg)</Label>
-                {entry.sets.map((set, setIndex) => (
+            <div className="flex flex-col gap-2">
+              {entry.sets.map((set, setIndex) => (
+                <div key={setIndex} className="flex items-center gap-2 w-full">
+                  <Label className="text-xs whitespace-nowrap">Weight (kg):</Label>
                   <Input
-                    key={setIndex}
                     type="number"
                     placeholder="0"
                     value={set.weight}
                     min={0}
                     step="0.5"
+                    className="flex-1"
                     onChange={(e) =>
                       updateSet(entry.id, setIndex, { weight: e.target.value })
                     }
                   />
-                ))}
-              </div>
-              <div className="flex flex-col gap-1 flex-1">
-                <Label className="text-xs">Reps</Label>
-                {entry.sets.map((set, setIndex) => (
+                  <Label className="text-xs whitespace-nowrap">Reps:</Label>
                   <Input
-                    key={setIndex}
                     type="number"
                     placeholder="0"
                     value={set.reps}
                     min={1}
                     step="1"
+                    className="flex-1"
                     onChange={(e) =>
                       updateSet(entry.id, setIndex, { reps: e.target.value })
                     }
                   />
-                ))}
-              </div>
-              <div className="flex flex-col gap-1">
-                <Label className="text-xs sr-only">Actions</Label>
-                {entry.sets.map((_, setIndex) => (
-                  <Button
-                    key={setIndex}
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    className="h-9 w-9 p-0 text-muted-foreground hover:text-destructive"
-                    onClick={() => removeSet(entry.id, setIndex)}
-                    disabled={entry.sets.length === 1}
-                  >
-                    ×
-                  </Button>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
 
             <Button

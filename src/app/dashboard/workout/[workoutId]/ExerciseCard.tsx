@@ -10,6 +10,7 @@ import {
   deleteSetAction,
   removeExerciseFromWorkoutAction,
 } from "./actions";
+import { Trash2 } from "lucide-react";
 
 type Set = {
   id: string;
@@ -64,13 +65,13 @@ export function ExerciseCard({ workoutExerciseId, exerciseName, sets, isComplete
         <h3 className="font-semibold text-lg">{exerciseName}</h3>
         {!isCompleted && (
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={handleRemoveExercise}
             disabled={isPending}
-            className="text-destructive hover:text-destructive"
+            className="text-destructive hover:text-destructive border-destructive/40 hover:border-destructive"
           >
-            Remove
+            <Trash2 className="h-4 w-4" />
           </Button>
         )}
       </div>
