@@ -25,11 +25,25 @@ export async function updateWorkout(
     .where(and(eq(workouts.id, id), eq(workouts.userId, userId)));
 }
 
+export async function finishWorkout(id: string) {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  return db
+    .update(workouts)
+    .set({ completedAt: new Date() })
+    .where(and(eq(workouts.id, id), eq(workouts.userId, userId)));
+}
+
 export async function createWorkout(data: { name: string; startedAt: Date }) {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
 
-  return db.insert(workouts).values({ ...data, userId });
+  const [workout] = await db
+    .insert(workouts)
+    .values({ ...data, userId })
+    .returning({ id: workouts.id });
+  return workout;
 }
 
 export async function getWorkoutsForDate(date: Date) {

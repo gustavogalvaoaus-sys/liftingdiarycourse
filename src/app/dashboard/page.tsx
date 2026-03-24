@@ -37,7 +37,6 @@ export default async function DashboardPage({
   const selectedDate = new Date(y, m - 1, d);
 
   const workouts = await getWorkoutsForDate(selectedDate);
-  const canLogWorkout = selectedDateStr >= isoToday;
 
   return (
     <div className="flex flex-col gap-8 px-12 py-10 max-w-5xl mx-auto w-full">
@@ -50,21 +49,12 @@ export default async function DashboardPage({
             Workouts for {formatDate(selectedDate)}
           </h2>
           <div className="flex items-center gap-3">
-            {canLogWorkout ? (
-              <a
-                href={`/dashboard/workout/new?date=${selectedDateStr}`}
-                className="rounded-lg border border-zinc-300 dark:border-zinc-600 px-4 py-2 text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-              >
-                Log New Workout
-              </a>
-            ) : (
-              <button
-                disabled
-                className="rounded-lg border border-zinc-200 dark:border-zinc-700 px-4 py-2 text-sm font-medium text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
-              >
-                Log New Workout
-              </button>
-            )}
+            <a
+              href={`/dashboard/workout/new?date=${selectedDateStr}`}
+              className="rounded-lg border border-zinc-300 dark:border-zinc-600 px-4 py-2 text-sm font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            >
+              Log New Workout
+            </a>
             <CalendarClient selectedDateStr={selectedDateStr} />
           </div>
         </div>
@@ -81,7 +71,7 @@ export default async function DashboardPage({
             {workouts.map((workout) => (
               <a
                 key={workout.id}
-                href={`/dashboard/workout/${workout.id}`}
+                href={`/dashboard/workout/${workout.id}?date=${selectedDateStr}`}
                 className="rounded-xl border border-zinc-200 dark:border-zinc-700 px-5 py-4 flex items-center justify-between hover:border-zinc-400 dark:hover:border-zinc-500 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors"
               >
                 <div className="flex flex-col gap-1">
